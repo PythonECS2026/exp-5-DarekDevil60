@@ -1,0 +1,86 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Case 1
+      id: case-1
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Case 1
+        setup-command: ''
+        command: python main.py
+        input: |-
+          College
+          1
+          Get Up
+          1
+        expected-output: |-
+          Original Tasks: ['Sleep', 'Getup', 'Brush']
+          Tasks after Adding: ['Sleep', 'Getup', 'Brush', 'College']
+          Tasks after Editing: ['Sleep', 'Get Up', 'Brush', 'College']
+          Tasks after Removing: ['Get Up', 'Brush', 'College']
+          Tasks after Sorting: ['Brush', 'College', 'Get Up']
+        comparison-method: contains
+        timeout: 10
+        max-score: 3
+    - name: Case 2
+      id: case-2
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Case 2
+        setup-command: ''
+        command: python main.py
+        input: |-
+          Brush
+          3
+          Exercise
+          0
+        expected-output: |-
+          Original Tasks: ['Sleep', 'Getup', 'Brush']
+          Tasks after Adding: ['Sleep', 'Getup', 'Brush', 'Brush']
+          Tasks after Editing: ['Sleep', 'Getup', 'Brush', 'Exercise']
+          Tasks after Removing: ['Getup', 'Brush', 'Exercise']
+          Tasks after Sorting: ['Brush', 'Exercise', 'Getup']
+        comparison-method: contains
+        timeout: 10
+        max-score: 3
+    - name: Case 3
+      id: case-3
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Case 3
+        setup-command: ''
+        command: python main.py
+        input: |-
+          assignment
+          2
+          Lunch
+          0
+        expected-output: |-
+          Original Tasks: ['Sleep', 'Getup', 'Brush']
+          Tasks after Adding: ['Sleep', 'Getup', 'Brush', 'assignment']
+          Tasks after Editing: ['Sleep', 'Getup', 'Lunch', 'assignment']
+          Tasks after Removing: ['Getup', 'Lunch', 'assignment']
+          Tasks after Sorting: ['Getup', 'Lunch', 'assignment']
+        comparison-method: contains
+        timeout: 10
+        max-score: 4
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        CASE-1_RESULTS: "${{steps.case-1.outputs.result}}"
+        CASE-2_RESULTS: "${{steps.case-2.outputs.result}}"
+        CASE-3_RESULTS: "${{steps.case-3.outputs.result}}"
+      with:
+        runners: case-1,case-2,case-3
