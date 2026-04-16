@@ -8,8 +8,6 @@ print(f"Original Tasks: {tasks}")
 
 # Write your code here
 
-tasks = []
-
 def display_tasks():
     if not tasks:
         print("Task list is empty.")
