@@ -7,67 +7,34 @@ tasks = ["Sleep", "Getup", "Brush"]
 print(f"Original Tasks: {tasks}")
 
 # Write your code here
+# Initialize the original list of tasks
+tasks = ['Sleep', 'Getup', 'Brush']
 
-def display_tasks():
-    if not tasks:
-        print("Task list is empty.")
-    else:
-        print("Task List:")
-        for i, task in enumerate(tasks, start=1):
-            print(f"{i}. {task}")
+print("--- Task List Manager ---")
+print(f"Original Tasks: {tasks}")
 
-def add_task():
-    task = input("Enter the task to add: ").strip()
-    tasks.append(task)
-    print(f"Task '{task}' added successfully.")
+# 1. Add a new task
+new_task = input("Enter a new task to add: ")
+tasks.append(new_task)
+print(f"Tasks after Adding: {tasks}")
 
-def remove_task():
-    display_tasks()
-    try:
-        task_index = int(input("Enter the task number to remove: ")) - 1
-        removed_task = tasks.pop(task_index)
-        print(f"Task '{removed_task}' removed successfully.")
-    except (IndexError, ValueError):
-        print("Invalid task number.")
+# 2. Edit a task by index
+try:
+    edit_index = int(input("Enter the index of the task to edit: "))
+    new_val = input("Enter the new task: ")
+    tasks[edit_index] = new_val
+    print(f"Tasks after Editing: {tasks}")
+except IndexError:
+    print("Invalid index provided for editing.")
 
-def update_task():
-    display_tasks()
-    try:
-        task_index = int(input("Enter the task number to update: ")) - 1
-        new_task = input("Enter the updated task: ").strip()
-        tasks[task_index] = new_task
-        print(f"Task updated successfully to '{new_task}'.")
-    except (IndexError, ValueError):
-        print("Invalid task number.")
+# 3. Remove a task by index
+try:
+    remove_index = int(input("Enter the index of the task to remove: "))
+    tasks.pop(remove_index)
+    print(f"Tasks after Removing: {tasks}")
+except IndexError:
+    print("Invalid index provided for removal.")
 
-def sort_tasks():
-    tasks.sort()
-    print("Tasks sorted successfully.")
-
-while True:
-    print("\nTask List Manager")
-    print("1. Display Tasks")
-    print("2. Add Task")
-    print("3. Remove Task")
-    print("4. Update Task")
-    print("5. Sort Tasks")
-    print("6. Exit")
-    
-    choice = input("Enter your choice: ").strip()
-    
-    if choice == "1":
-        display_tasks()
-    elif choice == "2":
-        add_task()
-    elif choice == "3":
-        remove_task()
-    elif choice == "4":
-        update_task()
-    elif choice == "5":
-        sort_tasks()
-    elif choice == "6":
-        print("Exiting Task List Manager. Goodbye!")
-        break
-    else:
-        print("Invalid choice. Please try again.")
-      
+# 4. Sort the tasks alphabetically
+tasks.sort()
+print(f"Tasks after Sorting: {tasks}")
